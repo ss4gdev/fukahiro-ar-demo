@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>3D・AR｜深廣</title><link rel="stylesheet" href="style.css"></head>
+<body class="ar-page">
+<header class="ar-header"><a class="ar-brand" href="index.html">深廣</a><a id="header-return" href="index.html">← 通販へ戻る</a></header>
+<main class="ar-main">
+<h1 id="ar-title">商品を読み込んでいます。</h1>
+<div class="selected-product"><img id="selected-image" alt=""><p id="selected-price"></p></div>
+<section class="viewer-card" aria-label="サンプルの3D表示">
+<div class="viewer-wrap"><span class="viewer-label">サンプル：マグロの握り（通販商品とは別です）</span>
+<model-viewer id="viewer" src="assets/maguro.glb" ios-src="assets/maguro.usdz" alt="マグロの握りのサンプルモデル。表示中の通販商品の正式モデルではありません。" camera-controls touch-action="pan-y" ar ar-modes="webxr scene-viewer quick-look" ar-scale="fixed" camera-orbit="35deg 65deg 105%" shadow-intensity="1" exposure="1" interaction-prompt="none"><button slot="ar-button" hidden tabindex="-1" aria-hidden="true"></button></model-viewer>
+<p id="viewer-status" role="status">3Dを読み込んでいます…</p>
+<div class="viewer-controls" aria-label="3D操作"><button id="rotate-left" aria-label="3Dを左へ回転" disabled>↶</button><button id="zoom-out" aria-label="3Dを縮小" disabled>−</button><button id="reset-view" disabled>向きを戻す</button><button id="zoom-in" aria-label="3Dを拡大" disabled>＋</button><button id="rotate-right" aria-label="3Dを右へ回転" disabled>↷</button></div></div>
+<button class="ar-launch" id="ar-launch" disabled>スマホでARを開く</button>
+</section>
+<p id="ar-support" class="support-note" role="status" hidden></p>
+<section class="cart-purchase" id="cart-purchase" aria-label="数量とカート">
+<div class="quantity-row"><label for="cart-quantity">数量</label><select id="cart-quantity"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select><button type="button" id="cart-open" disabled>カートを見る <span id="cart-count">0</span></button></div>
+<button type="button" class="cart-add" id="cart-add" disabled>カートに追加する</button>
+<p id="cart-error" class="cart-message" role="status" hidden></p>
+</section>
+<nav class="ar-navigation" aria-label="次のページ"><a class="return-button" id="shop-return" href="https://www.fukahiro-shop.jp/">通販サイトに戻る</a><a class="return-button" id="other-ar" href="index.html">別のARを見る</a></nav>
+<p class="model-credit"><a href="https://sketchfab.com/3d-models/maguro-2e42224d16484c4bab7cdc9636996e31">maguro</a> · <a href="https://sketchfab.com/SuperScanStudio">SuperScanStudio</a> · <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></p>
+</main>
+<dialog id="ar-help"><form method="dialog"><button class="dialog-close" aria-label="案内を閉じる">×</button></form><h2>ARを見るには</h2><p>iPhoneのSafari、またはAR対応のAndroidのChromeで開いてください。</p><form method="dialog"><button class="return-button">閉じる</button></form></dialog>
+<dialog id="demo-cart" class="cart-dialog" aria-labelledby="cart-title"><form method="dialog"><button class="dialog-close" aria-label="カートを閉じる">×</button></form><h2 id="cart-title">デモのカート</h2><p class="cart-caption">注文は行われません。</p><p id="cart-status" class="cart-message" role="status" hidden></p><div id="cart-items"></div><p id="cart-total" class="cart-total" hidden></p><form method="dialog"><button class="return-button">3Dページへ戻る</button></form><a class="cart-list-link" href="index.html">商品一覧へ</a></dialog>
+<script type="module" src="assets/model-viewer.min.js" id="model-viewer-module"></script><script type="module" src="ar.js"></script>
+</body></html>
