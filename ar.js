@@ -1,4 +1,4 @@
-import { shopProductUrl, shopCatalogUrl } from './config.js';
+import { shopProductUrl } from './config.js';
 import { initializeDemoCart } from './cart-ui.js?v=2';
 import { initializeProductPicker } from './product-picker.js';
 const viewer=document.querySelector('#viewer');
@@ -27,10 +27,9 @@ try{
   document.querySelector('#ar-title').textContent=p.name;
   document.querySelector('#selected-price').textContent=p.price+'（税込み）';
   document.querySelector('#selected-image').src=p.image;document.querySelector('#selected-image').alt=p.name;
-  const returnUrl=params.get('from')==='catalog'?`index.html#item-${p.id}`:params.get('from')==='detail'?shopProductUrl(p.id):shopCatalogUrl(p.id);
-  if(params.get('from')==='catalog')document.querySelector('#header-return').textContent='メニューへ';
+  const returnUrl=shopProductUrl(p.id);
   document.querySelector('#header-return').href=returnUrl;
-  document.querySelector('#shop-return').href=p.shopUrl;
+  document.querySelector('#shop-return').href=returnUrl;
   initializeDemoCart(products,p);
   const pickerFrom = params.get('from') === 'catalog' ? 'catalog' : params.get('from') === 'list' ? 'list' : 'detail';
   initializeProductPicker(products, p.id, pickerFrom);
