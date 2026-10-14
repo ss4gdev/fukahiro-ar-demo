@@ -3,6 +3,7 @@ import { createDemoCartAdapter } from './cart-adapter.js';
 
 export function initializeDemoCart(products, selectedProduct) {
   const dialog = document.querySelector('#demo-cart');
+  document.querySelector('.cart-list-link').textContent = 'ARメニューへ';
   const items = document.querySelector('#cart-items');
   const count = document.querySelector('#cart-count');
   const total = document.querySelector('#cart-total');
