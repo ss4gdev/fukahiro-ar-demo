@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="深廣・三昧セットを3DとARで確認できます。円形台の直径約33cm、厚さ1cm。">
+<meta name="theme-color" content="#163e32"><title>三昧セット｜深廣 3D・AR</title>
+<link rel="stylesheet" href="styles.css">
+<script type="module" src="vendor/model-viewer.min.js"></script><script defer src="app.js"></script>
+</head>
+<body>
+<header><span class="brand">深廣<span class="brand-label">3D・AR</span></span><span class="edition">No.2</span></header>
+<main>
+<div class="heading"><p class="eyebrow">FUKAHIRO · AR PREVIEW</p><h1>三昧セット</h1><p class="lead">料理を回して眺める。目の前に置いてみる。</p></div>
+<div class="layout">
+<section class="viewer-card" aria-label="三昧セットの3D表示">
+<div class="viewer-top"><span class="badge">3Dプレビュー</span><span class="gesture">ドラッグで回転 · ピンチで拡大</span></div>
+<model-viewer id="viewer" src="model.glb" ios-src="model.usdz#allowsContentScaling=0" alt="三昧セットの料理と1つの白い円形台。直径約33cm、台の厚さ1cm。" camera-controls touch-action="pan-y" ar ar-modes="scene-viewer quick-look" ar-scale="fixed" camera-orbit="25deg 55deg 115%" shadow-intensity=".7" exposure="1" tone-mapping="neutral" interaction-prompt="none" loading="eager">
+<button slot="ar-button" class="native-ar" type="button">この場所に置いてみる</button>
+<div slot="progress-bar" class="progress" aria-label="モデルの読み込み"><div id="progress-fill"></div></div>
+</model-viewer>
+<p id="viewer-status" role="status">3Dモデルを読み込んでいます…</p>
+<div class="controls"><button id="view-angle" type="button" disabled>斜めから</button><button id="view-top" type="button" disabled>真上から</button><button id="view-side" type="button" disabled>横から</button><button id="view-reset" type="button" disabled>表示を戻す</button></div>
+</section>
+<aside>
+<section class="details"><p class="eyebrow">SIZE</p><dl><div><dt>円形台の直径</dt><dd>約33<span>cm</span></dd></div><div><dt>台の厚さ</dt><dd>1<span>cm</span></dd></div></dl><p class="small">寸法は目安です。料理の形と色を保持し、台を厚さ1cmに仕上げた確認版です。</p></section>
+<section class="ar-card"><h2>スマートフォンでAR</h2><p>明るい場所で、テーブルなどの平らな面に置いてみてください。</p>
+<a class="ios-ar" rel="ar" href="model.usdz#allowsContentScaling=0"><img src="ar.svg" width="280" height="52" alt="iPhone・iPadでARを見る"></a>
+<button class="android-ar" id="android-ar" type="button">AndroidでARを見る</button>
+<p id="ar-help" class="small" role="status">iPhone・iPadはSafari、AndroidはAR対応端末のChromeで開いてください。</p>
+<button class="copy-link" id="copy-link" type="button">このページのURLをコピー</button><p id="copy-status" class="small" role="status"></p>
+</section>
+</aside>
+</div>
+<section class="check"><h2>確認するポイント</h2><p>料理の色や形、大きさ、台の薄さ、テーブルへの接地をご確認ください。気になる点は、このページのURLと使用端末を添えて制作担当へお知らせください。</p><p class="small">実機でのAR表示は確認中です。3D表示のみの場合は、AR確認とは区別してください。</p></section>
+<footer><div><span>三昧セット · AR確認版</span><span>20261029-thin-platform-v002</span></div><nav aria-label="ファイル"><a href="model.usdz">USDZ</a><a href="model.glb">GLB</a><a href="vendor/model-viewer-LICENSE.txt">3D表示ライブラリのライセンス</a></nav></footer>
+</main>
+</body></html>

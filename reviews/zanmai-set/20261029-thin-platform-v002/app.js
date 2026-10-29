@@ -1,0 +1,10 @@
+(()=>{'use strict';
+const viewer=document.getElementById('viewer'),status=document.getElementById('viewer-status'),buttons=[...document.querySelectorAll('.controls button')],help=document.getElementById('ar-help');let loaded=false;
+viewer.addEventListener('progress',e=>{const n=Math.round(e.detail.totalProgress*100);document.getElementById('progress-fill').style.width=n+'%';status.textContent='3Dモデルを読み込んでいます… '+n+'%';});
+viewer.addEventListener('load',()=>{loaded=true;buttons.forEach(b=>b.disabled=false);document.querySelector('.progress').classList.add('hide');status.textContent='ドラッグで回転、ピンチやホイールで拡大できます。';});
+viewer.addEventListener('error',()=>{status.textContent='3Dを読み込めませんでした。再読み込みするか、下のUSDZ・GLBから開いてください。';});
+for(const [id,orbit] of [['view-angle','25deg 55deg 115%'],['view-top','0deg 0deg 115%'],['view-side','0deg 90deg 115%'],['view-reset','25deg 55deg 115%']])document.getElementById(id).onclick=()=>{viewer.cameraOrbit=orbit;viewer.fieldOfView='auto';viewer.cameraTarget='auto auto auto';};
+document.getElementById('android-ar').onclick=async()=>{if(!loaded){help.textContent='3Dの読み込みが終わってから、もう一度押してください。';return;}if(!viewer.canActivateAR){help.textContent='AR対応のAndroid端末で、このページをChromeで開いてください。iPhone・iPadでは上の専用ボタンを使えます。';return;}try{await viewer.activateAR();}catch(e){help.textContent='ARを起動できませんでした。対応端末のChromeからお試しください。';}};
+viewer.addEventListener('ar-status',e=>{if(e.detail.status==='failed')help.textContent='ARを起動できませんでした。対応端末の標準ブラウザーで開いてください。';});
+document.getElementById('copy-link').onclick=async()=>{const node=document.getElementById('copy-status');try{await navigator.clipboard.writeText(location.href);node.textContent='URLをコピーしました。スマートフォンで開けます。';}catch(e){node.textContent='ブラウザーのアドレス欄からURLをコピーしてください。';}};
+})();
