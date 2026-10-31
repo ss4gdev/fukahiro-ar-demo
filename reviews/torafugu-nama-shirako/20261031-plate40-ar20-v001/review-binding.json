@@ -1,0 +1,32 @@
+{
+  "no": 7,
+  "product_id": "torafugu-nama-shirako",
+  "version": "20261031-plate40-ar20-v001",
+  "source_candidate_sha256": "d7b26b59d3e4e0fc2c17a59b23e2a44a4ca63bd33006dd95a3af3760ab4c8594",
+  "accepted_plate_review_sha256": "e36ae37e749da6b60b0dad0375d8e2aa22c2ccc5f62237a1b084434e8bc5966f",
+  "glb": {
+    "file": "model.glb",
+    "bytes": 16771596,
+    "sha256": "61608cada2009fbbfb626d2ce4d7f7c092e86c410a47106cd898b14401a100c5"
+  },
+  "usdz": {
+    "file": "model.usdz",
+    "bytes": 16228318,
+    "sha256": "bd210379b74203344c6f7818ef9b4e1a178335d29dc9417ced8515b3bc2d51a8"
+  },
+  "triangles": 126763,
+  "plate_diameter_cm": 40,
+  "plate_thickness_cm": 1,
+  "scale_basis": "User reported source width 37cm; physical device verification pending",
+  "up_axis": "Y",
+  "meters_per_unit": 1,
+  "origin": "Added plate bottom center",
+  "source_food_color_accepted": false,
+  "gloss_accepted": false,
+  "device_accepted": false,
+  "texture_resolution": [
+    2048,
+    2048
+  ],
+  "public_delivery_authorized": true
+}
