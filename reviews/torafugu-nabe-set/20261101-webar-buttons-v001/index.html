@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#173e38">
+  <title>とらふぐ鍋セット｜深廣 WebAR試作</title>
+  <link rel="stylesheet" href="./style.css">
+  <script type="importmap">{"imports":{"three":"./vendor/three/build/three.module.js","three/addons/":"./vendor/three/examples/jsm/"}}</script>
+  <script type="module" src="./app.js"></script>
+</head>
+<body>
+  <canvas id="camera" aria-label="料理のAR表示"></canvas>
+  <header><div><span class="brand">深廣</span><h1>とらふぐ鍋セット</h1></div><button id="end" class="small" hidden>終了</button></header>
+  <main id="welcome">
+    <span class="badge">ボタンで回せる AR・試作版</span>
+    <h2>お料理を、<br>目の前の机に。</h2>
+    <ol><li>カメラを許可する</li><li>机に向けて、ゆっくり動かす</li><li>「ここに置く」を押す</li></ol>
+    <p>置いた後は、大きなボタンで左右に回せます。</p>
+    <button id="start" class="primary" disabled>準備しています…</button>
+    <p id="loading" role="status">料理のデータを読み込んでいます。</p>
+    <p class="support">iPhoneはSafari、AndroidはChromeで開いてください。カメラと動きの利用許可が必要です。</p>
+    <a class="preview-link" href="?preview=1">操作を確認する（カメラなし）</a>
+    <a class="license" href="./licenses.html">使用ソフトウェアについて</a>
+  </main>
+  <div id="session" hidden>
+    <div class="guidance"><span id="mode" class="badge">机に置く</span><p id="status" role="status" aria-live="polite"></p></div>
+    <div id="aim" aria-hidden="true"><span></span></div>
+    <section id="controls" aria-label="料理の操作">
+      <button id="place" class="primary" disabled>置く場所を探しています</button>
+      <div id="rotation" hidden>
+        <div class="rotation-row">
+          <button id="left" aria-label="料理を左に15度回す"><span aria-hidden="true">↶</span>左に回す</button>
+          <button id="front" class="front">正面に<br>戻す</button>
+          <button id="right" aria-label="料理を右に15度回す"><span aria-hidden="true">↷</span>右に回す</button>
+        </div>
+        <p class="hint">1回押すと、少しずつ回ります</p>
+        <button id="replace" class="secondary">置き直す</button>
+      </div>
+    </section>
+  </div>
+  <section id="error" class="error-panel" role="alert" hidden><h2>表示を開始できませんでした</h2><p id="error-message"></p><button id="retry" class="primary">もう一度開く</button><a href="?preview=1">カメラなしで操作を確認</a></section>
+  <noscript>この画面にはJavaScriptが必要です。</noscript>
+</body>
+</html>
