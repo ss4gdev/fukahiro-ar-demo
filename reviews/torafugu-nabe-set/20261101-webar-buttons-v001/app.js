@@ -1,13 +1,11 @@
 import * as THREE from 'three';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
-import {Placement} from './placement.js?v=placement-v002';
-import {loadEngine,startEngine} from './xr-driver.js?v=placement-v002';
+import {Placement} from './placement.js?v=center-v003';
+import {loadEngine,startEngine} from './xr-driver.js?v=center-v003';
 const $=id=>document.getElementById(id);
 const preview=new URLSearchParams(location.search).get('preview')==='1';
 const placement=new Placement();
 const anchor=new THREE.Group();anchor.name='tabletop-anchor';anchor.visible=false;
-const marker=new THREE.Mesh(new THREE.RingGeometry(.116,.1265,48),new THREE.MeshBasicMaterial({color:0xf4d071,side:THREE.DoubleSide,depthTest:false}));
-marker.rotation.x=-Math.PI/2;marker.visible=false;marker.renderOrder=2;
 let model,world,stop,active=false,failed=false,frame=0,previewRenderer;
 let smoothYaw=0,lastFrame=0,lastTrackingFrame=0,sessionStartedAt=0;
 const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -17,16 +15,14 @@ function ui(){
   $('place').hidden=placed;$('rotation').hidden=!placed;$('aim').hidden=placed;
   const ready=placement.canPlace(performance.now());
   const candidate=placement.hasCandidate(performance.now());
-  marker.visible=!preview&&candidate;
-  if(marker.visible){marker.position.set(placement.candidate.x,placement.candidate.y+.001,placement.candidate.z);marker.material.color.setHex(ready?0x30db88:0xf4d071);}
-  $('place').disabled=!ready;$('aim').classList.toggle('ready',ready);
+  $('place').disabled=!ready;$('aim').classList.toggle('ready',ready);$('aim').classList.toggle('candidate',candidate);
   setText('place',ready?'ここに置く':candidate?'位置を確認しています':'置く場所を探しています');
   for(const id of ['left','front','right'])$(id).disabled=!placement.tracking;
   setText('mode',preview?'操作確認・カメラなし':placed?'ボタンで回す':'机に置く');
   setText('status',preview?'これは操作の確認画面です。ARではありません。':
     !placement.tracking?'机に向けて、スマホをゆっくり前後に動かしてください。':
     placed?'料理を置きました。下のボタンで回せます。':
-    ready?'緑の輪の位置に置きます。「ここに置く」を押してください。':
+    ready?'画面中央の緑の円に合わせて置きます。「ここに置く」を押してください。':
     candidate?'置く位置を確認しています。そのまま少しお待ちください。':
     '机の模様がある場所に、中央の印を合わせてください。');
 }
@@ -46,7 +42,7 @@ function populate({scene,camera,renderer}){
   renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.NeutralToneMapping;renderer.toneMappingExposure=1;
   scene.add(new THREE.HemisphereLight(0xffffff,0xc4c1b8,2.4));
   const light=new THREE.DirectionalLight(0xffffff,2);light.position.set(1,3,2);scene.add(light);
-  anchor.add(model);scene.add(anchor);scene.add(marker);
+  anchor.add(model);scene.add(anchor);
 }
 function stopSession(){
   active=false;cancelAnimationFrame(frame);
