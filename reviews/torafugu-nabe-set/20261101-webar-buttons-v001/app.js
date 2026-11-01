@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
-import {Placement} from './placement.js?v=center-v003';
-import {loadEngine,startEngine} from './xr-driver.js?v=center-v003';
+import {Placement} from './placement.js?v=recovery-v004';
+import {loadEngine,startEngine} from './xr-driver.js?v=recovery-v004';
 const $=id=>document.getElementById(id);
 const preview=new URLSearchParams(location.search).get('preview')==='1';
 const placement=new Placement();
