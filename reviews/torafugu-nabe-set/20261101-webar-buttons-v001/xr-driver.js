@@ -35,13 +35,15 @@ export function startEngine(canvas,callbacks){
         if(latestStatus==='NORMAL'&&now-lastSample<50)return;
         lastSample=now;
         const target=document.getElementById('aim').getBoundingClientRect();
-        const x=(target.left+target.width/2)/innerWidth,y=(target.top+target.height/2)/innerHeight;
+        const view=canvas.getBoundingClientRect();
+        if(view.width<=0||view.height<=0){callbacks.update([],false);return;}
+        const x=(target.left+target.width/2-view.left)/view.width,y=(target.top+target.height/2-view.top)/view.height;
         const hits=[];
         if(latestStatus==='NORMAL'&&target.width>0){
           // Five rays within the visible aim circle; at most 100 hit tests per second.
           const offsets=[[0,0],[-12,0],[12,0],[0,-12],[0,12]];
           offsets.forEach(([dx,dy],ray)=>{
-            const results=XR8.XrController.hitTest(Math.max(0,Math.min(1,x+dx/innerWidth)),Math.max(0,Math.min(1,y+dy/innerHeight)),['FEATURE_POINT']);
+            const results=XR8.XrController.hitTest(Math.max(0,Math.min(1,x+dx/view.width)),Math.max(0,Math.min(1,y+dy/view.height)),['FEATURE_POINT']);
             const hit=results.find(h=>h.position&&[h.position.x,h.position.y,h.position.z,h.distance].every(Number.isFinite)&&h.distance>=.12&&h.distance<=2.5);
             if(hit)hits.push({...hit,ray});
           });

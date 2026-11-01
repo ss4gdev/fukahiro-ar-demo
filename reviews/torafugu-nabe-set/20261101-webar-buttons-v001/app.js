@@ -1,7 +1,8 @@
 import * as THREE from 'three';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
-import {Placement} from './placement.js?v=recovery-v004';
-import {loadEngine,startEngine} from './xr-driver.js?v=recovery-v004';
+import {Placement} from './placement.js?v=coordinates-v005';
+import {loadEngine,startEngine} from './xr-driver.js?v=coordinates-v005';
+import {positionAtAim} from './screen-placement.js?v=coordinates-v005';
 const $=id=>document.getElementById(id);
 const preview=new URLSearchParams(location.search).get('preview')==='1';
 const placement=new Placement();
@@ -10,10 +11,11 @@ let model,world,stop,active=false,failed=false,frame=0,previewRenderer;
 let smoothYaw=0,lastFrame=0,lastTrackingFrame=0,sessionStartedAt=0;
 const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
 function setText(id,text){if($(id).textContent!==text)$(id).textContent=text;}
+function targetPosition(){return world?positionAtAim(world.camera,placement.candidate,$('aim').getBoundingClientRect(),$('camera').getBoundingClientRect()):null;}
 function ui(){
   const placed=placement.placed;
   $('place').hidden=placed;$('rotation').hidden=!placed;$('aim').hidden=placed;
-  const ready=placement.canPlace(performance.now());
+  const ready=placement.canPlace(performance.now())&&!!targetPosition();
   const candidate=placement.hasCandidate(performance.now());
   $('place').disabled=!ready;$('aim').classList.toggle('ready',ready);$('aim').classList.toggle('candidate',candidate);
   setText('place',ready?'ここに置く':candidate?'位置を確認しています':'置く場所を探しています');
@@ -23,7 +25,7 @@ function ui(){
     !placement.tracking?'机に向けて、スマホをゆっくり前後に動かしてください。':
     placed?'料理を置きました。下のボタンで回せます。':
     ready?'画面中央の緑の円に合わせて置きます。「ここに置く」を押してください。':
-    candidate?'置く位置を確認しています。そのまま少しお待ちください。':
+    candidate?'机を斜め上から映し、中央の円を置く場所に合わせてください。':
     '机の模様がある場所に、中央の印を合わせてください。');
 }
 function animate(now){
@@ -92,9 +94,11 @@ $('start').addEventListener('click',async()=>{
 });
 $('place').addEventListener('click',()=>{
   if(!world)return;
-  const p=placement.candidate;
+  const p=targetPosition();
+  if(!p){ui();return;}
   const yaw=p?Math.atan2(world.camera.position.x-p.x,world.camera.position.z-p.z):0;
   if(placement.place(performance.now(),yaw)){
+    placement.position={...p};
     anchor.position.set(placement.position.x,placement.position.y,placement.position.z);
     smoothYaw=yaw;anchor.rotation.y=yaw;anchor.visible=true;ui();
   }
