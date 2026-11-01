@@ -14,7 +14,7 @@ export async function loadEngine(){
 export function startEngine(canvas,callbacks){
   const XR8=window.XR8;
   XR8.XrController.configure({disableWorldTracking:false,scale:'absolute'});
-  let latestStatus='LIMITED';
+  let latestStatus='LIMITED',lastSample=-Infinity;
   const resize=()=>{
     const ratio=Math.min(devicePixelRatio||1,1.5);
     canvas.width=Math.round(innerWidth*ratio);canvas.height=Math.round(innerHeight*ratio);
@@ -31,10 +31,21 @@ export function startEngine(canvas,callbacks){
       },
       onUpdate:({processCpuResult})=>{
         latestStatus=processCpuResult?.reality?.trackingStatus||'LIMITED';
+        const now=performance.now();
+        if(latestStatus==='NORMAL'&&now-lastSample<50)return;
+        lastSample=now;
         const target=document.getElementById('aim').getBoundingClientRect();
         const x=(target.left+target.width/2)/innerWidth,y=(target.top+target.height/2)/innerHeight;
-        // The documented public hit-test API uses FEATURE_POINT. User aims at the tabletop.
-        const hits=latestStatus==='NORMAL'?XR8.XrController.hitTest(x,y,['FEATURE_POINT']):[];
+        const hits=[];
+        if(latestStatus==='NORMAL'&&target.width>0){
+          // Five rays within the visible aim circle; at most 100 hit tests per second.
+          const offsets=[[0,0],[-12,0],[12,0],[0,-12],[0,12]];
+          offsets.forEach(([dx,dy],ray)=>{
+            const results=XR8.XrController.hitTest(Math.max(0,Math.min(1,x+dx/innerWidth)),Math.max(0,Math.min(1,y+dy/innerHeight)),['FEATURE_POINT']);
+            const hit=results.find(h=>h.position&&[h.position.x,h.position.y,h.position.z,h.distance].every(Number.isFinite)&&h.distance>=.12&&h.distance<=2.5);
+            if(hit)hits.push({...hit,ray});
+          });
+        }
         callbacks.update(hits,latestStatus==='NORMAL');
       },
       onCameraStatusChange:({status})=>{if(status==='failed')callbacks.error(Error('カメラを使えません。SafariまたはChromeのカメラ許可を確認してください。'));},
