@@ -10,3 +10,7 @@
 body.active header{z-index:30}.error-panel{z-index:50}
 #aim{border-width:4px;box-shadow:0 0 0 3px #122e26,0 0 10px #0009}#aim span{margin:0}
 h2{margin:18px 0}
+
+#quicklook{display:block;width:100%;border-radius:14px;overflow:hidden}#quicklook img{display:block;width:100%;height:auto}
+#overlay:xr-overlay{background:transparent}
+body.native-ar{background:transparent}body.native-ar #camera{visibility:hidden!important}

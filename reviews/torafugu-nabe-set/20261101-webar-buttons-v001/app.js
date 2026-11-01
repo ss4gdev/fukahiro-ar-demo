@@ -1,8 +1,8 @@
 import * as THREE from 'three';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
-import {Placement} from './placement.js?v=coordinates-v005';
-import {loadEngine,startEngine} from './xr-driver.js?v=coordinates-v005';
-import {positionAtAim} from './screen-placement.js?v=coordinates-v005';
+import {Placement} from './placement.js?v=native-v007';
+import {loadEngine,startEngine} from './android-driver.js?v=native-v007';
+import {positionAtAim} from './screen-placement.js?v=native-v007';
 const $=id=>document.getElementById(id);
 const preview=new URLSearchParams(location.search).get('preview')==='1';
 const placement=new Placement();
@@ -28,7 +28,7 @@ function ui(){
     candidate?'机を斜め上から映し、中央の円を置く場所に合わせてください。':
     '机の模様がある場所に、中央の印を合わせてください。');
 }
-function animate(now){
+function updateFrame(now){
   if(!active)return;
   if(!preview&&!world&&now-sessionStartedAt>60000){fail(Error('ARの開始に時間がかかっています。カメラの許可と通信を確認して、もう一度開いてください。'));return;}
   if(!preview&&now-lastTrackingFrame>700){placement.update([],false,now);anchor.visible=false;ui();}
@@ -37,8 +37,9 @@ function animate(now){
   smoothYaw+=reduced?target-smoothYaw:(target-smoothYaw)*(1-Math.exp(-Math.min(now-lastFrame,100)/95));
   lastFrame=now;anchor.rotation.y=smoothYaw;
   if(preview&&world)previewRenderer.render(world.scene,world.camera);
-  frame=requestAnimationFrame(animate);
 }
+function animate(now){updateFrame(now);if(active)frame=requestAnimationFrame(animate);}
+
 function populate({scene,camera,renderer}){
   world={scene,camera,renderer};
   renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.NeutralToneMapping;renderer.toneMappingExposure=1;
@@ -75,13 +76,12 @@ function beginPreview(){
 $('start').addEventListener('click',async()=>{
   $('start').disabled=true;
   try{
-    // iOS must receive this request synchronously from the user's tap, before any other await.
-    if(typeof DeviceOrientationEvent!=='undefined'&&typeof DeviceOrientationEvent.requestPermission==='function'){
-      const permission=await DeviceOrientationEvent.requestPermission();if(permission!=='granted')throw Error('permission denied');
-    }
     showSession();
     stop=startEngine($('camera'),{
-      start:populate,
+      start:world=>{cancelAnimationFrame(frame);frame=0;populate(world);},
+      frame:updateFrame,
+      reset:()=>{placement.reset();anchor.visible=false;ui();},
+      end:()=>fail(Error('ARを終了しました。もう一度見るときは「もう一度開く」を押してください。')),
       update:(hits,normal)=>{
         if(!active)return;lastTrackingFrame=performance.now();placement.update(hits,normal,lastTrackingFrame);
         anchor.visible=placement.placed&&normal;
@@ -111,16 +111,17 @@ $('end').addEventListener('click',()=>{stopSession();location.href=location.path
 $('retry').addEventListener('click',()=>location.reload());
 addEventListener('pagehide',stopSession);
 document.addEventListener('visibilitychange',()=>{
-  if(document.hidden&&active&&!preview){stopSession();$('session').hidden=true;$('error').hidden=false;setText('error-message','カメラを停止しました。続けるときは「もう一度開く」を押してください。');}
+  if(document.hidden&&active&&!preview&&!world?.renderer.xr?.isPresenting){stopSession();$('session').hidden=true;$('error').hidden=false;setText('error-message','カメラを停止しました。続けるときは「もう一度開く」を押してください。');}
 });
 $('camera').addEventListener('webglcontextlost',event=>{event.preventDefault();fail(Error('ARの表示が中断されました。「もう一度開く」を押してください。'));});
 try{
   if(!preview&&(!isSecureContext||!navigator.mediaDevices?.getUserMedia))throw Error('ARにはHTTPSとカメラ対応のブラウザが必要です。スマホのSafariまたはChromeで確認URLを開いてください。');
+  if(!preview)await loadEngine();
   await Promise.all([
     new Promise((resolve,reject)=>new GLTFLoader().load('./model.glb',gltf=>{model=gltf.scene;resolve();},event=>{if(event.total)setText('loading',`料理のデータを読み込み中 ${Math.round(event.loaded/event.total*100)}%`);},()=>reject(Error('料理のデータを読み込めませんでした。通信を確認して、もう一度開いてください。')))),
-    preview?Promise.resolve():loadEngine(),
+
   ]);
-  if(preview)beginPreview();else{setText('loading','準備ができました。');setText('start','カメラを開いて始める');$('start').disabled=false;}
+  if(preview)beginPreview();else{setText('loading','準備ができました。');setText('start','机に置いて見る');$('start').disabled=false;}
 }catch(e){fail(e);}
 // Read-only diagnostics for local QA; no camera pixels or user data are exposed.
 export function snapshot(){return {preview,active,failed,placed:placement.placed,tracking:placement.tracking,yaw:placement.yaw,rotation:anchor.rotation.y,position:anchor.position.toArray(),scale:anchor.scale.toArray(),visible:anchor.visible,meshes:model?model.children.length:0,drawCalls:world?.renderer.info.render.calls};}
