@@ -1,0 +1,1 @@
+const model=document.getElementById('model'),status=document.getElementById('status');model.addEventListener('load',()=>{status.textContent='回転して確認できます。';});model.addEventListener('error',()=>{status.textContent='読み込みに時間がかかる場合は、下の「iPhoneでAR表示」をお試しください。';});
