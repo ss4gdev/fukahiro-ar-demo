@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex">
+<title>とらふぐ鍋セット｜野菜の色調整</title><link rel="stylesheet" href="review.css"><script type="module" src="viewer.js"></script></head><body><main>
+<header><p>深廣　／　High Detail</p><h1>とらふぐ鍋セット <small>野菜の色調整</small></h1></header>
+<div class="layout"><section class="workspace" aria-label="同じ視点で比較">
+<div class="viewbar"><label>基準色 <select id="base"><option value="current">現状</option><option value="lift">ふぐの影を浅く</option><option value="recipe">iPhone採用色に寄せる</option></select></label><label>高さ <select id="elev"><option>65°</option><option>35°</option></select></label><div><button id="prev" aria-label="左に回す">←</button><output id="angle">0°</output><button id="next" aria-label="右に回す">→</button></div><button id="zoom" aria-pressed="false">2倍拡大</button></div>
+<div class="frames" id="frames" aria-busy="true">
+<figure><figcaption>調整前</figcaption><div class="stage"><canvas id="before" width="1152" height="1008" aria-label="調整前の鍋セット"></canvas></div></figure>
+<figure><figcaption id="afterTitle">調整後</figcaption><div class="stage" id="pickStage"><canvas id="after" width="1152" height="1008" aria-label="調整後の鍋セット"></canvas></div></figure></div>
+<p id="status" role="status">読み込み中…</p><p class="small">左右の矢印で全周を確認できます。2倍表示で画像をクリックすると、両方が同じ位置に寄ります。</p>
+</section><aside aria-label="野菜の調整">
+<h2>色を調整</h2>
+<label class="slider green" for="green">水菜の緑 <output id="greenVal"></output></label><input id="green" type="range" min="0" max="100" value="35">
+<label class="slider orange" for="orange">にんじんの橙 <output id="orangeVal"></output></label><input id="orange" type="range" min="0" max="100" value="30">
+<label class="slider" for="white">えのきの白さ <output id="whiteVal"></output></label><input id="white" type="range" min="0" max="100" value="45">
+<div class="enoki"><div class="row"><button id="pick" aria-pressed="false">えのきの位置を選ぶ</button><label>範囲 <select id="radius"><option value="8">小</option><option value="16" selected>中</option><option value="26">大</option></select></label></div>
+<p class="small">右の画像でえのきの束をクリックしてください。離れた束には点を追加できます。</p>
+<div class="row"><span id="points">選択 0 か所</span><button id="undo" disabled>1点戻す</button></div></div>
+<label class="toggle"><input type="checkbox" id="overlay"> 適用範囲を表示</label>
+<p class="small" id="legend" hidden>緑＝水菜、橙＝にんじん、紫＝えのき。緑と橙は色から推定した候補です。</p>
+<div class="actions"><button id="share">設定リンクをコピー</button><button id="reset">調整をゼロに戻す</button></div><p class="small" id="saved" role="status"></p><input id="shareText" type="url" aria-label="設定リンク" readonly hidden></aside></div>
+<footer><a href="../20261114-whole-color-three-v001/">前回の3案比較</a><span>全24視点・ブラウザーでの色調整プレビュー</span></footer>
+</main></body></html>
