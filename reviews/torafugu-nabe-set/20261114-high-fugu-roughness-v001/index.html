@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ja"><head>
+<meta charset="utf-8"><link rel="icon" href="data:,"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src data:; connect-src 'none'; base-uri 'none'; form-action 'none'">
+<title>とらふぐのツヤを比べる｜深廣</title>
+<link rel="stylesheet" href="review.css"><script defer src="viewer.js"></script>
+</head><body><main>
+<header><p class="product">深廣　とらふぐ鍋セット · High Detail</p><h1>ふぐのツヤを比べる</h1>
+<p>光を左右に動かして、身の境目を通る光の幅と、表面の模様の見え方を比べてください。</p></header>
+<div class="controls">
+<div role="group" aria-label="比較する場所"><button type="button" data-region="b1" aria-pressed="true">B1 · 身の境目</button><button type="button" data-region="surface" aria-pressed="false">周辺の表面</button></div>
+<label>光の方向 <input id="light" type="range" min="-72" max="72" value="-32"><output id="angle" for="light">−32°</output></label>
+<button id="reset" type="button">視点と光を戻す</button></div>
+<div class="viewbar"><label>表示 <select id="layout"><option value="all">3つを並べる</option><option value="0">弱だけ</option><option value="1">中だけ</option><option value="2">強だけ</option></select></label>
+<div role="group" aria-label="表示倍率"><button id="zoom-out" type="button" aria-label="縮小">−</button><button id="zoom-in" type="button" aria-label="拡大">＋</button></div><span id="status" role="status">B1を読み込んでいます…</span></div>
+<section class="frame" aria-label="同じ視点での材質比較">
+<div id="labels"><div><b>弱</b> 粗さ 0.62</div><div><b>中</b> 粗さ 0.40</div><div><b>強</b> 粗さ 0.22</div></div>
+<canvas id="view" tabindex="0" aria-label="ふぐの3D比較。ドラッグまたは矢印キーで回転。ホイールまたはプラス・マイナスキーで拡大縮小。"></canvas>
+</section><p class="help">指でドラッグすると回転し、＋と−で拡大・縮小できます。3つの視点と光は連動します。</p>
+<section class="notes"><h2>見るポイント</h2>
+<p><strong>身の境目</strong>　光が境目を横切るときに、ふぐの身同士の輪郭を追えるか。</p>
+<p><strong>周辺の表面</strong>　白く光る帯が広がったとき、身の模様がどこまで読めるか。濡れた身として自然に感じる強さを選んでください。</p></section>
+</main></body></html>
