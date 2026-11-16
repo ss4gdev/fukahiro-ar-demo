@@ -11,10 +11,21 @@ fieldset{border:0;padding:0;margin:0}legend{font-size:14px;margin:10px 0 4px}.ro
 button,.save{font:inherit;font-size:15px}button{cursor:pointer;border:1px solid #aab8ac;border-radius:8px;background:#fffdf8;color:#203f34;min-height:40px;padding:4px 12px}button[aria-pressed=true]{background:#245143;color:white;border-color:#245143}.versions button{flex:1;min-height:44px}.picture{position:relative;overflow:hidden;border-radius:13px;background:#000;aspect-ratio:832/640;touch-action:pan-y}.picture img{display:block;width:100%;height:100%;object-fit:contain;pointer-events:none}.angle{display:grid;grid-template-columns:44px 1fr 44px;align-items:center;gap:9px}.angle input{width:100%;height:38px;accent-color:#245143}.angle button{padding:0;font-size:21px}.caption{display:flex;align-items:center;justify-content:space-between;gap:6px;margin:7px 0;color:#4f6056;font-size:14px}.row{justify-content:space-between;margin-top:8px}
 #ar-section{border-top:1px solid #bac9bb;margin-top:24px;padding-top:8px}.ar{display:inline-block;width:min(290px,100%);margin:12px 0 4px}.ar img{display:block;width:100%;height:auto}.save,a{color:#225744}.save{display:inline-flex;align-items:center;min-height:44px}summary{cursor:pointer;padding:8px 0}details{margin-top:14px}.reference{font-size:13px;color:#4f6056;margin:6px 0}.links{display:flex;gap:20px}a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid #b07a30;outline-offset:3px}
 @media(max-width:440px){main{margin-top:17px}.row{align-items:flex-start}.caption{align-items:flex-start}.picture{border-radius:10px}}
-</style></head>
+.photo-hero,.flat{display:block;background:#000;border-radius:12px;overflow:hidden}.photo-hero{max-width:390px;margin:10px 0}.flat{max-width:280px;margin:8px 0}.photo-hero img,.flat img{display:block;width:100%;height:auto}#ar-section{margin:8px 0 22px;padding:0 0 16px;border-top:0;border-bottom:1px solid #bac9bb}#photo-reference{margin:8px 0}.reference a{display:inline-block;padding:6px 0}</style></head>
 <body><main id="brush">
 <p class="brand">深廣</p><h1>とらふぐ鍋セット</h1>
 <p class="intro">ふぐ・野菜・豆腐と、撮影時の皿を含む全体モデルです。</p>
+<section id="ar-section" aria-labelledby="ar-heading">
+<h2 id="ar-heading">写真の色で机に置く</h2>
+<div class="photo-hero"><img src="brush-photo-original.png" width="832" height="640" alt="基準にしたBrushの元画像。鍋セットを斜め前から見た向き"></div>
+<p class="muted">写真に写った色と陰影を使った、鍋セット全体の立体です。iPhoneで机に置いて、ふぐの身や野菜を横や背面からも確認できます。</p>
+<a id="walk-ar" class="ar" rel="ar" href="brush-photo-360-v003.usdz#allowsContentScaling=0"><img src="ar.svg" width="360" height="76" alt="鍋セットの立体をQuick Lookで開く"></a>
+<p class="reference">全周の立体 · 25.70 MB　<a href="brush-photo-360-v003.usdz" download>USDZを保存</a></p>
+<details id="photo-reference"><summary>添付と同じ向きの写真をQuick Lookで見比べる</summary>
+<p class="muted">Brushの元画像をそのまま収めた平面版です。画像をタップして、立体版と色や質感を見比べてください。</p>
+<a id="photo-ar" class="flat" rel="ar" href="brush-photo-front-v003.usdz"><img src="brush-photo-original.png" width="832" height="640" alt="基準写真を平面のままQuick Lookで開く"></a>
+<p class="reference">固定写真 · 0.37 MB　<a href="brush-photo-front-v003.usdz" download>USDZを保存</a>　<a href="brush-photo-original.png">元画像を開く</a></p></details>
+</section>
 <section aria-labelledby="compare"><h2 id="compare">Brushのツヤを見比べる</h2>
 <p class="muted">2つのUSDZから同じ角度で描画した画像です。左右にスワイプして回し、容量を切り替えて比較できます。</p>
 <fieldset><legend>表示するBrush版</legend><div class="versions"><button type="button" data-variant="37" aria-pressed="true">37.39 MB</button><button type="button" data-variant="19" aria-pressed="false">19.64 MB</button></div></fieldset>
@@ -24,10 +35,7 @@ button,.save{font:inherit;font-size:15px}button{cursor:pointer;border:1px solid 
 <div class="row"><div class="buttons" role="group" aria-label="見る高さ"><button data-height="25" aria-pressed="true">斜め25°</button><button data-height="50" aria-pressed="false">上から50°</button></div><button id="zoom" aria-pressed="false">切り身を拡大</button></div>
 <p id="notice" class="reference" role="status"></p>
 </section>
-<section id="ar-section"><h2>iPhoneで机に置いて見る</h2>
-<p class="muted">Quick Look用の形状モデル（22.05 MB）です。鍋セットの形にBrushの色を写しました。こちらのツヤはARの照明と材質で決まります。</p>
-<a class="ar" rel="ar" href="brush-mesh-ar.usdz#allowsContentScaling=0"><img src="ar.svg" width="360" height="76" alt="Quick Lookで鍋セットを机に置く"></a><br>
-<a class="save" href="brush-mesh-ar.usdz" download>AR用USDZを保存</a></section>
+
 <details><summary>比較に使ったBrushの元USDZを保存</summary><p class="muted">ガウシアンスプラット対応ソフト用です。</p><div class="links"><a class="save" href="nabe-brush-37.usdz" download>37.39 MB</a><a class="save" href="nabe-brush-19.usdz" download>19.64 MB</a></div></details>
 <noscript>全周の角度切替にはJavaScriptが必要です。AR用USDZは上のリンクから開けます。</noscript>
 </main><script src="brush-views.js"></script><script src="brush-turn.js"></script></body></html>
