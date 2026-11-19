@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="referrer" content="no-referrer"><meta name="theme-color" content="#193f35">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; connect-src 'self' blob: data:; worker-src 'self' blob:; img-src 'self' data: blob:; media-src 'self' blob:; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'self'; form-action 'none'">
+<title>深廣 とらふぐ鍋セット｜机に置いて見る</title><link rel="icon" href="data:,"><link rel="stylesheet" href="style.css">
+<!-- This product includes the XR Engine software developed by Niantic Spatial, Inc.
+Copyright © 2026 Niantic Spatial, Inc. All rights reserved. Supplied AS IS without warranties.
+Licensed under XR Engine License Agreement: ./xr/LICENSE (original binary, unmodified). -->
+</head><body>
+<canvas id="feed" aria-hidden="true"></canvas><canvas id="splat" aria-label="鍋セットの立体表示"></canvas>
+<main id="welcome"><div class="badge">深廣 · WebAR お試し版</div><h1>とらふぐ鍋セットを<br>目の前の机に。</h1>
+<p class="lead">スマートフォンを動かして、<br>ふぐのツヤをいろいろな角度から。</p>
+<ol><li>カメラと動きの利用を許可</li><li>机を映して、左右にゆっくり動かす</li><li>机の上に印を合わせて「ここに置く」</li></ol>
+<button id="start" class="primary">カメラで机に置く</button><p id="load-status" role="status" aria-live="polite">iPhoneではSafariで開いてください。</p>
+<p class="note">アプリの追加は不要です。机の模様や、机に置いた紙の近くで試してください。カメラ映像をサーバーへ送る処理はありません。</p>
+<a class="secondary-link" href="../20261117-splatfacto-camera-color-v001/direct.html">カメラを使わず、指で回して見る</a>
+<details><summary>iPhoneで開くQRコード</summary><p><img src="qr.png" width="240" height="240" alt="このWebARを開くQRコード" style="max-width:100%;height:auto"></p><p>iPhoneの標準カメラで読み取り、Safariで開いてください。</p></details>
+<details><summary>お試し版について</summary><p>鍋全体のSplatfactoを直接表示します。明るさ・彩度の追加調整はしていません。位置の追跡、接地とサイズは実機での確認対象です。実物の陰に隠れる表現には対応していません。</p><p>AR technology: Niantic Spatial, Inc. © 2026. <a href="xr/LICENSE">XR Engineライセンス・無保証条項</a><br>3D rendering: <a href="../20261117-splatfacto-camera-color-v001/PLAYCANVAS-LICENSE.txt">PlayCanvas / MIT</a></p></details>
+</main>
+<div id="hud" hidden><header><span>深廣 とらふぐ鍋セット</span><button id="close" aria-label="ARを終了">終了</button></header>
+<div id="reticle" hidden aria-hidden="true"><span></span></div>
+<section id="bottom"><p id="tracking" role="status" aria-live="polite">机を映し、左右にゆっくり動かしてください。</p><button id="place" class="primary" disabled>机の位置を探しています</button>
+<div id="adjust" hidden><div class="controls"><button id="rotate-left" aria-label="左に回す">↶ 回す</button><button id="rotate-right" aria-label="右に回す">回す ↷</button><button id="reposition">置き直す</button></div>
+<label for="scale">大きさ <output id="size-value">100%</output></label><input id="scale" type="range" min="50" max="160" value="100" step="5"></div>
+<details id="help"><summary>うまく置けないとき</summary><p>明るい場所で、木目や文字のある紙の近くを映してください。スマートフォンを左右にゆっくり動かすと、奥行きを推定しやすくなります。印が机の上にあることを確認してから配置します。</p><button id="restart">位置の追跡をやり直す</button><p id="diagnostic"></p><button id="copy">確認情報をコピー</button></details></section></div>
+<script type="module" src="app.mjs"></script></body></html>
