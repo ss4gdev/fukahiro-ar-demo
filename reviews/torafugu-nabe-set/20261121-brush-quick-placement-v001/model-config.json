@@ -1,0 +1,37 @@
+{
+  "rotationColumnMajor": [
+    0.6427135660207762,
+    -0.00012743250287851156,
+    0.7661065564357314,
+    0,
+    0.7661065390052271,
+    -0.00016359638861778719,
+    -0.6427135786099852,
+    0,
+    0.0002072348658855027,
+    0.9999999784985892,
+    -0.0000075187445795947846,
+    0,
+    0,
+    0,
+    0,
+    1
+  ],
+  "scale": 0.008968200858265999,
+  "translation": [
+    0.02958783983370205,
+    0.016507411650396115,
+    -0.006311756052938428
+  ],
+  "supportHeight": 0,
+  "sourceUnits": "native RealityScan coordinates; same calibrated AR frame as Splatfacto trial",
+  "splats": 143653,
+  "shDegree": 3,
+  "extraExposureEV": 0,
+  "saturationGain": 1,
+  "inheritedPhotoDevelopmentEV": 0.5,
+  "sourceSHA256": "ae3b710efaafc55aabde97dbd0202e79d94e1addbe70679db3ae53d012ca724d",
+  "rimYawOffsetDegrees": 20.284783550584706,
+  "file": "nabe-brush-manual-color-v001.compressed.ply",
+  "bytes": 8805088
+}
