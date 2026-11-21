@@ -35,7 +35,7 @@ function sensors(t){
     });
 }
 function clearDesk(t){
-    t.samples=[];t.refs=[];t.hit=null;t.placed=false;t.metricPlaced=false;t.anchorDepth=0;
+    t.samples=[];t.refs=[];t.hit=null;t.placed=false;t.metricPlaced=false;t.anchorDepth=0;t.confirmedPlane=null;
     t.steady.reset();t.scaleTransition=null;$('paired-feed').hidden=true;
     $('size-state').hidden=true;
     if(t.scene)t.scene.dish.enabled=false;
@@ -58,9 +58,11 @@ function place(t){
     // The position and orientation already belong to the tracked plane.
     const rect=video.getBoundingClientRect();
     const viewSpan=2*hit.depth*Math.tan(camera.camera.fov*Math.PI/360)*Math.min(1,rect.width/rect.height);
-    const scale=t.metric.mapMeters?(targetRim/sourceRim)/t.metric.mapMeters:.49*viewSpan/sourceRim;
+    t.placeEye=camera.getPosition().clone();t.placeRay=camera.forward.clone();
+    t.confirmedPlane=t.hit.visual?t.hit:null;
+    t.metricPlaced=!!(t.metric.mapMeters&&t.confirmedPlane);
+    const scale=t.metricPlaced?(targetRim/sourceRim)/t.metric.mapMeters:.49*viewSpan/sourceRim;
     stage.setLocalScale(scale,scale,scale);t.placed=true;t.pending=false;t.anchorDepth=hit.depth;
-    t.metricPlaced=!!t.metric.mapMeters;
     showSize(t);
     dish.enabled=true;$('place').hidden=true;$('target').hidden=true;$('adjust').hidden=false;
     say(t.metricPlaced?'周りから鍋をご覧ください。':'少し左右に動かすと、大きさを推定できます。');
@@ -70,7 +72,7 @@ function showSize(t){
     label.dataset.metric=String(t.metricPlaced);
     label.textContent=t.metricPlaced?'皿径25cm（推定）':'仮表示 · 大きさを確認中';
 }
-function observePlane(t,image,camera,k,vertical,now,alva){
+function observePlane(t,image,camera,k,vertical,now,alva,visualOnly=false){
     if(now-t.lastScan<95)return;
     t.lastScan=now;t.refs=t.refs.filter(ref=>now-ref.time<1150);
     t.samples=t.samples.filter(hit=>now-hit.time<850);
@@ -80,12 +82,12 @@ function observePlane(t,image,camera,k,vertical,now,alva){
         for(const ref of t.refs){
             if(now-ref.time<140)continue;
             const found=locateSurface(ref.data,gray,k,camera,vertical,t.metric.mapMeters);
-            if(found){candidate=found;break;}
+            if(found){candidate={...found,visual:true};break;}
         }
     }
     // A fitted map plane can bridge low contrast at the reticle. Only use a
     // measured normal and require observations from different camera positions.
-    if(!candidate&&alva.findPlane){
+    if(!candidate&&!visualOnly&&alva.findPlane){
         const raw=alva.findPlane(100);
         const fitted=sdkTable(raw,camera,null);
         if(fitted&&(!vertical||fitted.up.dot(vertical)>.94))candidate=intersectTable(fitted.point,vertical||fitted.up,camera);
@@ -108,7 +110,7 @@ function observePlane(t,image,camera,k,vertical,now,alva){
         for(const r of t.refs){
             if(!r.photo||now-r.time<140)continue;
             const fitted=patchTable(r.photo,image,camera,k,null);
-            if(fitted?.wellSupported){candidate=fitted;break;}
+            if(fitted?.wellSupported){candidate={...fitted,visual:true};break;}
         }
     }
     if(t.refs.length===0||now-t.refs.at(-1).time>260)t.refs.push({time:now,data:makeReference(gray,k,camera),photo:vertical?null:reference(image,camera,k)});
@@ -116,7 +118,10 @@ function observePlane(t,image,camera,k,vertical,now,alva){
     if(!candidate)return;
     const eye=camera.getPosition();
     const support=t.samples.filter(h=>eye.distance(h.eye)>.009*candidate.depth&&candidate.up.dot(h.up)>.985&&Math.abs(h.point.clone().sub(candidate.point).dot(candidate.up))<.035*candidate.depth);
-    if(support.length&&now-support[0].time>=120)t.hit=candidate;
+    if(support.length&&now-support[0].time>=120){
+        const checked=candidate.visual&&support.some(h=>h.visual&&now-h.time>=120);
+        t.hit={...candidate,visual:!!checked};
+    }
     t.samples.push({...candidate,time:now,eye:eye.clone()});
 }
 function frameLoop(t,alva,capture,ctx){
@@ -170,15 +175,29 @@ function frameLoop(t,alva,capture,ctx){
                 const meters=t.metric.solve(now);
                 if(t.placed){
                     dish.enabled=true;
-                    if(!t.metricPlaced&&meters&&!t.scaleTransition){
+                    if(!t.metricPlaced&&!t.confirmedPlane){
+                        observePlane(t,image,camera,alva.intrinsics,up,now,alva,true);
+                        if(t.hit?.visual){
+                            const h=t.hit,cos=h.up.dot(t.placeRay);
+                            const depth=h.point.clone().sub(t.placeEye).dot(h.up)/cos;
+                            if(cos<-.18&&depth>0){
+                                const contact=t.placeEye.clone().add(t.placeRay.clone().mulScalar(depth));
+                                if(contact.distance(h.point)<.40*depth)t.confirmedPlane={...h,contact};
+                            }
+                        }
+                    }
+                    if(!t.metricPlaced&&meters&&t.confirmedPlane&&!t.scaleTransition){
                         const scale=(targetRim/sourceRim)/meters;
-                        t.scaleTransition={start:now,from:t.scene.stage.getLocalScale().x,to:scale};
+                        const pos=t.scene.stage.getPosition().clone();
+                        t.scaleTransition={start:now,from:t.scene.stage.getLocalScale().x,to:scale,origin:pos,contact:t.confirmedPlane.contact||pos};
+                        t.steady.reset();
                     }
                     if(t.scaleTransition){
                         const {start,from,to}=t.scaleTransition,progress=Math.min(1,(now-start)/360);
                         const w=progress*progress*(3-2*progress),scale=Math.exp(Math.log(from)*(1-w)+Math.log(to)*w);
                         t.scene.stage.setLocalScale(scale,scale,scale);
-                        if(progress===1){t.scaleTransition=null;t.metricPlaced=true;showSize(t);say('大きさを合わせました。周りから鍋をご覧ください。');}
+                        t.scene.stage.setPosition(new pc.Vec3().lerp(t.scaleTransition.origin,t.scaleTransition.contact,w));
+                        if(progress===1){t.scaleTransition=null;t.steady.reset();t.metricPlaced=true;showSize(t);say('大きさを合わせました。周りから鍋をご覧ください。');}
                     }
                 }
                 else{
