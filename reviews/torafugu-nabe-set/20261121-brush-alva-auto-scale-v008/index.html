@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>深廣｜とらふぐ鍋セットを机に置く</title>
+<link rel="stylesheet" href="../20261121-brush-alva-blippar-v007/style.css">
+<style>#target{background:transparent}#target.search{border:2px dashed white}#adjust button{touch-action:manipulation}#bottom #status{white-space:normal}#tools{justify-content:flex-end}</style></head>
+<body><main id="menu"><p class="brand">深廣</p><h1>とらふぐ鍋セットを机に置く</h1>
+<p>置きたい場所を中央に映し、iPhoneを少し左右に動かしてください。「ここに置く」を1回押すと、机の向きと縮尺が分かったところで鍋が現れます。</p>
+<button id="start" class="primary">カメラを開く</button><p id="notice" role="status"></p>
+<small>皿の直径は25cmです。表示精度を確認中です。動きとカメラの利用を許可してください。</small>
+</main><div id="ar" hidden><div id="viewport"><video id="camera-feed" muted playsinline autoplay></video><canvas id="application-canvas"></canvas></div>
+<div id="tools"><button id="end">終了</button></div><button id="target" class="search" aria-label="この位置に鍋を置く"></button>
+<div id="bottom"><span id="status" role="status"></span><button id="place" class="primary">ここに置く</button>
+<div id="adjust" hidden><button id="turn-left" aria-label="鍋を左に回す">↶</button><button id="replace">置き直す</button><button id="turn-right" aria-label="鍋を右に回す">↷</button></div></div></div>
+<script type="module" src="./app.mjs"></script></body></html>
