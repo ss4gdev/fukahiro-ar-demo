@@ -1,0 +1,21 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>深廣｜鍋セットの実機測定</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f7f6f0;color:#183a31;font:16px/1.55 -apple-system,BlinkMacSystemFont,"Yu Gothic",sans-serif}main{max-width:42em;margin:auto;padding:1.15rem}h1{font-size:1.65rem}h2{font-size:1.23rem;margin:0 0 .55rem}section{background:#fff;border:1px solid #c6cec8;border-radius:12px;padding:1rem;margin:1rem 0}label{display:block;margin:.55rem 0}select,input,button,.go{font:inherit;border:1px solid #79938a;border-radius:7px;min-height:44px;padding:.4rem .7rem}select{max-width:100%}input[type=number]{width:6.5em}input[type=text]{width:min(100%,22em)}.go,button{cursor:pointer;color:white;background:#215940;display:inline-block;text-decoration:none}p{margin:.5rem 0 .85rem}.read{white-space:pre-line;background:#eff4ef;padding:.75rem;border-radius:8px}a{color:#215940}.cols{display:flex;gap:.55rem;flex-wrap:wrap}
+</style></head><body><main><h1>鍋セットの実機測定</h1>
+<section><h2>同じ机で変更前後を比べる</h2>
+<p>普通の明るさで、まず模様のある机を使います。机とiPhoneの開始位置をそろえ、v010・v011を試してから無地の机でも繰り返します。目印や定規は配置が済んでから置いてください。</p>
+<label>机 <select id="desk"><option value="pattern">模様あり</option><option value="plain">無地</option></select></label>
+<label>表示するもの <select id="asset"><option value="ply">Brushの鍋セット</option><option value="reference">25cmの軽い基準円盤</option></select></label>
+<label>読み込み条件 <select id="load"><option value="cold">初回（キャッシュなし）</option><option value="warm">同じ条件の2回目</option><option value="unknown">不明</option></select></label>
+<p>初回は各版で新しいプライベートセッションを使い、2回目は同じセッションで開き直します。Safariを閉じる前に記録を保存してください。初回の許可待ちは画面収録で確認できます。</p>
+<div class="cols"><a class="go" id="original">変更前 v010</a><a class="go" id="candidate">検証版 v011</a></div>
+<p>v010では「ここに置けます」と先に出ることがあります。比較測定ではカメラを少し左右に動かし、計測用の「机面・尺度・モデル準備完了」が表示されてからタップしてください。</p></section>
+<section><h2>このSafariに記録した結果</h2><label>試行 <select id="trials"></select></label><p id="timing" class="read"></p>
+<form id="observations" hidden><p>正面・斜め・横で料理の色としっとりしたツヤを見比べます。皿の左右端を同じ奥行きの定規と照合し、iPhoneを横に30cm動かしたあと、机面上で皿中心が動いた距離を記録します。</p>
+<label>端末・OS・机・照明のメモ <input id="conditions" type="text" placeholder="例　iPhone 13 Pro、木目、室内灯"></label>
+<label>許可ダイアログを待った合計秒数 <input id="prompt" type="number" min="0" step=".01"> 秒</label><p>表示されなければ0、測れなければ空欄。カメラが起動するまでの時間も自動で記録します。</p>
+<label>皿の外幅 <input id="diameter" type="number" min=".01" step=".01"> cm</label>
+<label>横に30cm移動した後のずれ <input id="drift" type="number" min="0" step=".01"> cm</label>
+<div id="views"></div><button type="submit">この試行に保存</button></form>
+<p id="verdict" aria-live="polite"></p><button type="button" id="download">記録を書き出す</button></section></main><script type="module" src="./review.mjs"></script></body></html>
+
